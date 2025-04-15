@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Investor Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        .search-form {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Stock Investment Management System</h1>
+            <p>A comprehensive system to track investor records</p>
+        </div>
+        
+        <div class="search-form">
+            <h4>Search Investors</h4>
+            <form action="/investors" method="GET" class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="name" name="name" 
+                           placeholder="Enter investor name" th:value="${searchName}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+                <div class="col-md-2">
+                    <a href="/investors" class="btn btn-secondary">Clear Filter</a>
+                </div>
+            </form>
+        </div>
+        
+        <h3>Investor Listing</h3>
+        <div th:if="${investors.empty}" class="alert alert-info">
+            No investors found.
+        </div>
+        
+        <table th:if="${!investors.empty}" class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Stock Name</th>
+                    <th>Investment Amount</th>
+                    <th>Investment Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="investor : ${investors}">
+                    <td th:text="${investor.id}"></td>
+                    <td th:text="${investor.name}"></td>
+                    <td th:text="${investor.email}"></td>
+                    <td th:text="${investor.stockName}"></td>
+                    <td th:text="${'$' + investor.investmentAmount}"></td>
+                    <td th:text="${#temporals.format(investor.investmentDate, 'yyyy-MM-dd')}"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="mt-4">
+            <a href="/generate" class="btn btn-warning" target="_blank">Generate 50 Dummy Records</a>
+        </div>
+    </div>
+</body>
+</html>
